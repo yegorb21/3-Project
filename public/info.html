@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mafia Info</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>
+            Info
+        </h1>
+        <h3>
+            Overview
+        </h3>
+        <p>
+            Mafia is a social deduction game created by Dmitry Davidoff in 1986 modelling a
+            conflict between two groups: an informed minority (the evils), and an uninformed majority (the villagers).
+            At the start of the game, each player is secretly assigned a role affiliated with one of these teams. The
+            game has two alternating phases: first, a night role, during which those with night killing powers may
+            covertly kill other players, and second, a day role, in which surviving players debate the identities of
+            players and vote to eliminate a suspect. The game continues until a faction achieves its win condition; for
+            village, this usually means eliminating all evils, while for evils, this usually means reaching numerical
+            equality with the village.
+        </p>
+
+        <h3>
+            Roles
+        </h3>
+        <p>
+            <strong>Village:</strong> The "good" role. The villagers win by eliminating all mafia. Villagers can
+            eliminate mafia members by voting them off during the day cycle. There are 3 villagers per 1 mafia.
+            <br><br>
+            <strong>Mafia:</strong> The "evil" role. The mafia win by reaching equal numbers with the villagers. Mafia
+            can eliminate villagers by killing them off during nighttime, or by manipulating the vote during the day
+            cycle. There is one mafia per 3 villagers.
+        </p>
+        <div class="row">
+            <div class="col-lg-6">
+                <div>
+                    <button id="home-btn" type="button">
+                        Home
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <button class="start-btn" type="button">
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="js/info.js" type="text/javascript"></script>
+
+</body>
+
+</html>
