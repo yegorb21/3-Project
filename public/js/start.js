@@ -5,8 +5,11 @@ $(document).ready(function () {
             "id": 1,
             "name": "SpongeBob",
             "image": "https://vignette.wikia.nocookie.net/spongebobgalaxy/images/0/07/SpongeBob_SquarePants.png/revision/latest?cb=20171228024014",
+            // "image": "/vader.jpg",
             "occupation": "Fry Cook",
             "location": "A Pineapple Under the Sea"
+
+            // Image by <a href="https://pixabay.com/users/ErikaWittlieb-427626/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1724901">ErikaWittlieb</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1724901">Pixabay</a>
         },
         {
             "id": 2,
@@ -77,6 +80,11 @@ $(document).ready(function () {
     var mafiaPeople = []
     var townsPeople = []
 
+    var numTotalGuess = 0
+    var numCorrectGuess = 0
+
+    var historiesGet = []
+
 
     mafiaPeople.push(shuffledAllPeople[0], shuffledAllPeople[1])
     townsPeople.push(shuffledAllPeople[2], shuffledAllPeople[3], shuffledAllPeople[4], shuffledAllPeople[5], shuffledAllPeople[6], shuffledAllPeople[7])
@@ -133,15 +141,21 @@ $(document).ready(function () {
 
     $(document).on("click", ".remove", function () {
 
+        // $(".text-fill").tex
+
         // you have a 2/3rds chance of successfully voting someone off. because i said so
         var voteDeciderNumber = randomIntFromInterval(1, 3)
         console.log(voteDeciderNumber)
 
+        numTotalGuess++
+
         if (voteDeciderNumber == 3) {
             // if(!alert('Alert For your User!')){window.location.reload();}
             alert("The other townsfolk disagreed with your suspicion, the vote was unsuccessful")
+
         } else {
-            alert("Rejoice! The townsfolk agreed with your suspicion, the vote was successful")
+            alert("Rejoice! The townsfolk agreed with your suspicion, the vote was successful. Surely this one was a mafia member...")
+
             $(this).parentsUntil(".wrapper").remove()
 
             var votedOffMafiaStatus = $(this).attr("data-mafia")
@@ -150,6 +164,8 @@ $(document).ready(function () {
             console.log("id of person being voted off: " + idToRemove)
 
             if (votedOffMafiaStatus == "true") {
+                numCorrectGuess++
+
                 var removeIndex = mafiaPeople.indexOf(idToRemove)
                 console.log("mafia remove index is: " + removeIndex)
 
@@ -157,6 +173,7 @@ $(document).ready(function () {
 
                 numMafia -= 1
             } else {
+
                 var removeIndex = townsPeople.indexOf(idToRemove)
 
                 console.log("town remove index is: " + removeIndex)
@@ -169,13 +186,15 @@ $(document).ready(function () {
             console.log("towns people: " + townsPeople)
             console.log("mafia people: " + mafiaPeople)
 
-
-            if (numMafia == 0) {
-                alert("CONGRATS!! You have successfully eliminated all mafia members, and have won the game! Please refresh the page to play again.")
-            }
         }
 
 
+        insertHistory(numCorrectGuess, numTotalGuess)
+
+
+        if (numMafia == 0) {
+            alert("CONGRATS!! You have successfully eliminated all mafia members, and have won the game! Please refresh the page to play again.")
+        }
 
         alert("It is now nighttime...")
 
@@ -197,16 +216,21 @@ $(document).ready(function () {
 
         alert("The townspeople awaken to a gruesome sight, " + nameOfTownsKilled + " has been killed in the night. Surely a work of the treacherous mafia.")
 
-        $('span[data-id="'+ personKilled + '"]').parentsUntil(".wrapper").remove();
+        $('span[data-id="' + personKilled + '"]').parentsUntil(".wrapper").remove();
 
         townsPeople.splice(nightKilledIndex, 1)
         numTownsFolk -= 1
 
-        if (numMafia >= numTownsFolk){
-            alert("Oh no, the unthinkable has happened. The mafia runs rampant in the streets, they have reached numerical equality with the townsfolk and have won the game.")
+        if (numMafia >= numTownsFolk) {
+            alert("Oh no, the unthinkable has happened. You have failed to correctly identify and eliminate the mafiosos in time. The mafia now openly runs rampant in the streets, they have reached numerical equality with the townsfolk and have won the game.")
+            alert("You correctly voted off " + numCorrectGuess + " mafia out of a possible " + numTotalGuess + " guesses.")
         }
 
         //start night
+        getHistory()
+
+        // console.log("get route produces: " + historiesGet)
+
     })
 
     function randomIntFromInterval(min, max) { // min and max included 
@@ -233,5 +257,19 @@ $(document).ready(function () {
     }
 
 
-    //   $('body').append(htmlText);
+    function insertHistory(correct, total) {
+        event.preventDefault();
+        var history = {
+            numCorrectGuess: correct,
+            numTotalGuess: total
+        };
+
+        $.post("/api/history", history);
+    }
+
+    function getHistory() {
+        $.get("/api/history", function (data) {
+            historiesGet = data;
+        });
+    }
 });
